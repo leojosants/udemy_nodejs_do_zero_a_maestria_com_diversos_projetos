@@ -8,7 +8,7 @@ const server = http.createServer((req, res) => {
     // Habilitando envio de html
     res.setHeader('contenty-Type', 'text/html');
 
-    res.end('<h1>Olá, este é meu primeiro server com HTML.</h1>');
+    res.end('<h1> Olá, este é meu primeiro server com HTML.</h1><p>Testando atualização</p>');
 });
 
 server.listen(port, () => {
