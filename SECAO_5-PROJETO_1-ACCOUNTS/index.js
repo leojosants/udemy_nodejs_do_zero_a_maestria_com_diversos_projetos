@@ -34,6 +34,19 @@ function operation() {
             if (action === 'Criar Conta') {
                 createAccount();
             }
+            else if (action === 'Depositar') {
+                
+            }
+            else if (action === 'Consultar Saldo') {
+                
+            }
+            else if (action === 'Sacar') {
+                
+            }
+            else if (action === 'Sair') {
+                console.log(chalk.bgBlue.black('Obrigado por utilizar o Accounts!'));
+                process.exit()
+            }
 
         })
         .catch((err) => console.log(err))
@@ -42,6 +55,7 @@ function operation() {
 
 // create an account
 function createAccount() {
+    
     console.log(chalk.bgGreen.black('Parabéns por escolher o nosso banco!'));
     console.log(chalk.green('Defina as opções da sua conta a seguir:'));
 
