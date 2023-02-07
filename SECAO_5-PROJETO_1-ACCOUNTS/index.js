@@ -38,13 +38,19 @@ function operation() {
                 deposit();
             }
             else if (action === 'Consultar Saldo') {
-                
+                getAccountBalance();
             }
             else if (action === 'Sacar') {
                 
             }
             else if (action === 'Sair') {
-                console.log(chalk.bgBlue.black('Obrigado por utilizar o Accounts!'));
+                
+                console.log(
+                    chalk.bgBlue.black(
+                        'Obrigado por utilizar o Accounts!'
+                    )
+                );
+                
                 process.exit()
             }
 
@@ -56,8 +62,17 @@ function operation() {
 // create an account
 function createAccount() {
     
-    console.log(chalk.bgGreen.black('Parabéns por escolher o nosso banco!'));
-    console.log(chalk.green('Defina as opções da sua conta a seguir:'));
+    console.log(
+        chalk.bgGreen.black(
+            'Parabéns por escolher o nosso banco!'
+        )
+    );
+    
+    console.log(
+        chalk.green(
+            'Defina as opções da sua conta a seguir:'
+        )
+    );
 
     buildAccount();
 
@@ -85,7 +100,12 @@ function buildAccount() {
             }
 
             if (fs.existsSync(`accounts/${accountName}.json`)) {
-                console.log(chalk.bgRed.black('Esta conta já existe, escolha outro nome!'),);
+                
+                console.log(
+                    chalk.bgRed.black(
+                        'Esta conta já existe, escolha outro nome!'
+                    )
+                );
 
                 buildAccount();
 
@@ -100,7 +120,11 @@ function buildAccount() {
                 },
             );
 
-            console.log(chalk.green('Parabéns, a sua Conta foi criada!'));
+            console.log(
+                chalk.green(
+                    'Parabéns, a sua Conta foi criada!'
+                )
+            );
 
             operation();
 
@@ -156,7 +180,13 @@ function deposit() {
 function checkAccount(accountName) {
     
     if (!fs.existsSync(`accounts/${accountName}.json`)) {
-        console.log(chalk.bgRed.black('Esta conta não existe, escolha outro nome!'));
+        
+        console.log(
+            chalk.bgRed.black(
+                'Esta conta não existe, escolha outro nome!'
+            )
+        );
+
         return false;
     }
 
@@ -169,7 +199,13 @@ function addAmount(accountName, amount) {
     const accountData = getAccount(accountName);
 
     if (!amount) {
-        console.log(chalk.bgRed.black('Ocorreu um erro, tente novamente mais tarde!'));
+        
+        console.log(
+            chalk.bgRed.black(
+                'Ocorreu um erro, tente novamente mais tarde!'
+            )
+        );
+        
         return deposit();
     }
 
@@ -184,7 +220,11 @@ function addAmount(accountName, amount) {
         }
     );
 
-    console.log(chalk.green(`Foi depositado o valor de R$${amount} na sua conta!`));
+    console.log(
+        chalk.green(
+            `Foi depositado o valor de R$${amount} na sua conta!`
+        )
+    );
 
 };
 
@@ -200,4 +240,40 @@ function getAccount(accountName) {
 
     return JSON.parse(accountJSON);
 
+};
+
+// Show account balance
+function getAccountBalance() {
+  
+    inquirer
+        .prompt(
+            [
+                {
+                    name: 'accountName',
+                    message: 'Qual o nome da sua Conta?',
+                },
+            ]
+        )
+        .then((answer) => {
+            
+            const accountName = answer['accountName'];
+
+            // Verify if account exists
+            if (!checkAccount(accountName)) {
+                return getAccountBalance();
+            }
+
+            const accountData = getAccount(accountName);
+
+            console.log(
+                chalk.bgBlue.black(
+                    `Olá, o Saldo da sua Conta é de R$${accountData.balance}`
+                )
+            );
+
+            operation();
+
+        })
+        .catch(err => console.log(err));
+    
 };
