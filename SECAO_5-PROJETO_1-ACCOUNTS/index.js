@@ -311,9 +311,7 @@ function withdraw() {
                     
                     const amount = answer['amount'];
 
-                    console.log(amount);
-
-                    operation();
+                    removeAmmount(accountName, amount);
 
                 })
                 .catch(err => console.log(err));
@@ -321,4 +319,53 @@ function withdraw() {
         })
         .catch(err => console.log(err));
     
+};
+
+// 
+function removeAmmount(accountName, amount) {
+    
+    const accountData = getAccount(accountName);
+
+    if (!amount) {
+        
+        console.log(
+            chalk.bgRed.black(
+                `Ocorreu um erro, tente mais tarde!`
+            )
+        );
+
+        return withdraw();
+
+    }
+
+    if (accountData.balance < amount) {
+        
+        console.log(
+            chalk.bgRed.black(
+                'Valor indisponível!'
+            )
+        );
+
+        return withdraw();
+
+    }
+
+    accountData.balance = parseFloat(accountData.balance) - parseFloat(amount);
+
+    fs.writeFileSync(
+        `accounts/${accountName}.json`,
+        JSON.stringify(accountData),
+        function (err) {
+            console.log(err);
+        }
+    );
+
+    console.log(
+        chalk.green(
+            `Foi realizado um saque de R$${amount} da sua Conta!`
+        )
+    );
+
+    operation()
+
 };
