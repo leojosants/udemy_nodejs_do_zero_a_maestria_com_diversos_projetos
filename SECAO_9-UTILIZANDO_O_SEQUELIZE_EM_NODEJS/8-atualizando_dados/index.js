@@ -89,6 +89,7 @@ app.get('/', async (req, res) => {
 });
 
 // 
+// conn.sync({ force: true }) // PARA RESET DA TABELA
 conn.sync()
     .then(() => { app.listen(3000); })
     .catch((error) => console.log(error));
