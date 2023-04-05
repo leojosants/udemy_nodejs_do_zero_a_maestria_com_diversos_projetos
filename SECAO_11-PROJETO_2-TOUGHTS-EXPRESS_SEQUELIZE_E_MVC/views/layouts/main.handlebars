@@ -30,7 +30,12 @@
       </nav>
 
       <div class='container'>
-         {{! MWNSAGENS }}
+         {{#if messages.message}}
+            <div class='message'>
+               {{messages.message}}
+            </div>
+         {{/if}}
+
          {{{body}}}
       </div>
 
