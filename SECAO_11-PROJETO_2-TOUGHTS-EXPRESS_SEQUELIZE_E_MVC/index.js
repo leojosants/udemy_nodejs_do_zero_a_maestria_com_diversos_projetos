@@ -14,6 +14,7 @@ const User = require('./models/User');
 
 // IMPORT ROUTES
 const toughtsRoutes = require('./routers/toughtsRoutes');
+const authRoutes = require('./routers/authRoutes');
 
 // IMPORT CONTROLLER
 const ToughtController = require('./controllers/ToughtController');
@@ -62,6 +63,8 @@ app.use((req, res, next) => {
 
 // ROUTES
 app.use('/toughts', toughtsRoutes);
+app.use('/', authRoutes);
+
 app.get('/', ToughtController.showToughts);
 
 // CONEXÃO COM BD
