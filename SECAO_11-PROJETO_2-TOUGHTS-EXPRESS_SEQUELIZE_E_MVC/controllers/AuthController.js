@@ -39,11 +39,14 @@ module.exports = class AuthController {
             req.session.userid = createdUser.id;
 
             req.flash('message', 'Cadastro realizado com sucesso!');
-
             req.session.save(() => { res.redirect('/'); });
-
         }
         catch (error) { console.log(error); }
 
+    };
+
+    static logout(req, res) {
+        req.session.destroy();
+        res.redirect('/login');
     };
 };
