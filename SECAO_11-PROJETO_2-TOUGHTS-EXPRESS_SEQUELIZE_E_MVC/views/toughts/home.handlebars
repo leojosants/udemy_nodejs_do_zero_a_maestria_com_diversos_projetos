@@ -1,2 +1,22 @@
+{{!  }}
+<div class='home_header'>
+   <h1>Todos os pensamentos</h1>
+</div>
 
-<h1>Todos os pensamentos</h1>
+<div class='toughts_container'>
+
+   {{#each toughts}}
+
+      <figure>
+         <blockquote>
+            "{{this.title}}"
+         </blockquote>
+         <figcaption>
+            por
+            <span>{{this.User.name}}</span>
+         </figcaption>
+      </figure>
+
+   {{/each}}
+
+</div>
