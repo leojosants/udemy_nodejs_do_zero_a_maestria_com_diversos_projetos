@@ -12,14 +12,16 @@ module.exports = class ToughtController {
 
         if (req.query.search) { search = req.query.search; }
 
+        let order = 'DESC';
+
+        if (req.query.order === 'old') { order = 'ASC'; }
+        else { order = 'DESC'; }
+
         const toughtsData = await Tought.findAll(
             {
                 include: User,
-
-                where:
-                {
-                    title: { [Op.like]: `%${search}%` }
-                }
+                where: { title: { [Op.like]: `%${search}%` } },
+                order: [['createdAt', order]]
             }
         );
 
@@ -91,13 +93,10 @@ module.exports = class ToughtController {
 
         const tought = await Tought.findOne(
             {
-                where:
-                {
-                    id: id,
-                },
-
+                where: { id: id, },
                 raw: true
-            });
+            }
+        );
 
         res.render('toughts/edit', { tought });
     };
@@ -113,7 +112,5 @@ module.exports = class ToughtController {
             req.session.save(() => { res.redirect('/toughts/dashboard') });
         }
         catch (error) { console.log('Aconteceu um erro: ' + error + '\n'); }
-
-
     };
 };
