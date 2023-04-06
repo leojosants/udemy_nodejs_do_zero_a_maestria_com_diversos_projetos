@@ -172,10 +172,14 @@ form input[type='submit']:hover, .btn:hover {
     display: flex;
 }
 
-.dashboard .actions .btn{
+.dashboard .actions .btn {
     color: #fff;
     border-color: #fff;
     margin: 0 0.5em;
+}
+
+.dashboard a {
+    color: #f6982d;
 }
 
 /* FOOTER */
