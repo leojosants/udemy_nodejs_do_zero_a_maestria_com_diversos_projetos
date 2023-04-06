@@ -57,6 +57,21 @@ module.exports = class ToughtController {
             req.flash('message', 'Pensamento removido com sucesso!');
             req.session.save(() => { res.redirect('/toughts/dashboard') });
         } catch (error) { console.log('Aconteceu um erro: ' + error + '\n'); }
+    };
 
+    static async updateTought(req, res) {
+        const id = req.params.id;
+
+        const tought = await Tought.findOne(
+            {
+                where:
+                {
+                    id: id,
+                },
+
+                raw: true
+            });
+
+        res.render('toughts/edit', { tought });
     };
 };
