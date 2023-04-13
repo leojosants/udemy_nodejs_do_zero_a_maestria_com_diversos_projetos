@@ -159,20 +159,34 @@ module.exports = class UserController {
             return;
         }
 
-        if (!password) {
-            res.status(422).json({ message: 'A senha é obrigatória!' });
-            return;
-        }
-
-        if (!confirmPassword) {
-            res.status(422).json({ message: 'A confirmação de senha é obrigatória!' });
-            return;
-        }
+        user.phone = phone;
 
         if (password !== confirmPassword) {
-            res.status(422).json({ message: 'A senha e a confirmação de senha precisam ser iguais!' });
-            return;
+            res.status(422).json({ message: 'A senha e a confirmação de senha precisam ser iguais!' }); return;
         }
+        else if (password === confirmPassword && password != null) {
+
+            //  Create password
+            const salt = await bcrypt.genSalt(12);
+            const passwordHash = await bcrypt.hash(password, salt);
+
+            user.password = passwordHash;
+        }
+
+        try {
+
+            //  Returns user update data
+            await User.findByIdAndUpdate(
+                { _id: user._id },
+                { $set: user },
+                { new: true }
+            );
+
+            res.status(200).json({ messagem: 'Usuário atualizado com sucesso!' });
+
+        } catch (error) { res.status(500).json({ messagem: error }); return; }
+
+
 
     };
 
