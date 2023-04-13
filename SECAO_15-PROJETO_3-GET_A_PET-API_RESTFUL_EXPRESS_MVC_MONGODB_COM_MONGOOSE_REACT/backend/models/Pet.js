@@ -21,4 +21,4 @@ const Pet = mongoose.model(
 
 );
 
-module.exports = Pe;
+module.exports = Pet;
