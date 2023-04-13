@@ -12,5 +12,6 @@ router.post('/create', verifyToken, imageUpload.array('images'), PetController.c
 router.get('/', PetController.getAll);
 router.get('/myPets', verifyToken, PetController.getAllUserPets);
 router.get('/myAdoptions', verifyToken, PetController.getAllUserAdoptions);
+router.get('/:id', PetController.getPetById);
 
 module.exports = router;
