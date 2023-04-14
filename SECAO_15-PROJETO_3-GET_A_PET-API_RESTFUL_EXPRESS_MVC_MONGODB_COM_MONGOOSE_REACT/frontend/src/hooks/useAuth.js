@@ -9,7 +9,7 @@ export default function useAuth() {
 
         try {
             const data = await api
-                .post('/user/register', user)
+                .post('/users/register', user)
                 .then((response) => { return response.data; });
             console.log(data);
         }
