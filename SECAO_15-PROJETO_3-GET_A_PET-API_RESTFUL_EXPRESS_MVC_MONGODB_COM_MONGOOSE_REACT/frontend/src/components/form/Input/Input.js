@@ -6,7 +6,7 @@ function Input(
 ) {
     return (
 
-        <div>
+        <div className={styles.form_control}>
             <label htmlFor={name}>{text}: </label>
             <input
                 type={type}
