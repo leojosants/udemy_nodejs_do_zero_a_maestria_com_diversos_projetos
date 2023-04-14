@@ -9,6 +9,7 @@ import Home from './components/pages/Home';
 /*  Components/Layouts  */
 import Navbar from './components/layout/Navbar/Navbar';
 import Footer from './components/layout/Footer/Footer';
+import Container from './components/layout/Container/Container';
 
 // 
 function App() {
@@ -17,11 +18,13 @@ function App() {
     <Router>
       <Navbar />
 
-      <Routes>
-        <Route path='/login' element={<Login />} />
-        <Route path='/register' element={<Register />} />
-        <Route path='/' element={<Home />} />
-      </Routes>
+      <Container>
+        <Routes>
+          <Route path='/login' element={<Login />} />
+          <Route path='/register' element={<Register />} />
+          <Route path='/' element={<Home />} />
+        </Routes>
+      </Container>
 
       <Footer />
     </Router>
