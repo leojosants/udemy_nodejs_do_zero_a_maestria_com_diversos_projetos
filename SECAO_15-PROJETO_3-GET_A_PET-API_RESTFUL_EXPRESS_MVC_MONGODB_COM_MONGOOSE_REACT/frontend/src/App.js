@@ -10,6 +10,7 @@ import Home from './components/pages/Home';
 import Navbar from './components/layout/Navbar/Navbar';
 import Footer from './components/layout/Footer/Footer';
 import Container from './components/layout/Container/Container';
+import Message from './components/layout/Message/Message';
 
 //  Context
 import { UserProvider } from './context/UserContext';
@@ -20,7 +21,9 @@ function App() {
 
     <Router>
       <UserProvider>
+        
         <Navbar />
+        <Message />
 
         <Container>
           <Routes>
@@ -31,6 +34,7 @@ function App() {
         </Container>
 
         <Footer />
+        
       </UserProvider>
     </Router>
 
