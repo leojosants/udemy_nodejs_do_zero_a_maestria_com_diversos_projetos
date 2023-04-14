@@ -7,14 +7,14 @@ import Register from './components/pages/Auth/register';
 import Home from './components/pages/Home';
 
 //  Components  //
-import Navibar from './components/layout/Navbar';
+import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 
 function App() {
   return (
 
     <Router>
-      <Navibar />
+      <Navbar />
 
       <Switch>  
         <Route path='/login'>

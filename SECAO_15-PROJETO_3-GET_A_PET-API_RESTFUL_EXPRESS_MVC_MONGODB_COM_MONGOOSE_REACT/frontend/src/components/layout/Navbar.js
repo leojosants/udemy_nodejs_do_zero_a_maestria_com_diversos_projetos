@@ -1,12 +1,13 @@
 //
 import { Link } from 'react-router-dom';
+import styles from './Navbar.module.css';
 import Logo from '../../assets/img/logo.png';
 
-function Navibar() {
+function Navbar() {
     return (
 
-        <nav>
-            <div>
+        <nav className={styles.navbar}>
+            <div className={styles.navbar_logo}>
                 <img src={Logo} alt="Get A Pet" />
                 <h2>Get A Pet</h2>
             </div>
@@ -29,4 +30,4 @@ function Navibar() {
 
     );
 };
-export default Navibar;
+export default Navbar;
