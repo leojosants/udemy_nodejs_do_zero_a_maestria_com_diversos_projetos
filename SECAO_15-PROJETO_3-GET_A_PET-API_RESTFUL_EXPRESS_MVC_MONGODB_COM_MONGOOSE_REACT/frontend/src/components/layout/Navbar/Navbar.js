@@ -8,8 +8,8 @@ import Logo from '../../../assets/img/logo.png';
 function Navbar() {
     return (
 
-        <nav>
-            <div>
+        <nav className={styles.navbar}>
+            <div className={styles.navbar_logo}>
                 <img src={Logo} alt="Get a Pet" />
                 <h2>Get a Pet</h2>
             </div>
