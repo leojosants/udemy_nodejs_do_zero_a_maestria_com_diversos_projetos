@@ -9,6 +9,7 @@ import Home from './components/pages/Home';
 //  Components  //
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
+import Container from './components/layout/Container';
 
 function App() {
   return (
@@ -16,19 +17,23 @@ function App() {
     <Router>
       <Navbar />
 
-      <Switch>  
-        <Route path='/login'>
-          <Login />
-        </Route>
+      <Container>
+        <Switch>
+         
+          <Route path='/login'>
+            <Login />
+          </Route>
 
-        <Route path='/register'>
-          <Register />
-        </Route>
+          <Route path='/register'>
+            <Register />
+          </Route>
 
-        <Route path='/'>
-          <Home />
-        </Route>        
-      </Switch>
+          <Route path='/'>
+            <Home />
+          </Route>
+        
+        </Switch>
+      </Container>
 
       <Footer />
     </Router>
