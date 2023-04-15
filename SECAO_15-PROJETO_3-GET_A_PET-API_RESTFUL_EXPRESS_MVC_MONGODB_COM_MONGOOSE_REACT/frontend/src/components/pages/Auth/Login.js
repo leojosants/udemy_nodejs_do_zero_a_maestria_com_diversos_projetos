@@ -1,22 +1,28 @@
-// 
+/*  React   */
 import { useState, useContext } from 'react'
 import { Link } from 'react-router-dom';
+
 import Input from '../../../components/form/Input/Input';
 import styles from '../../form/Form.module.css';
-
-//  Context
-import { Context } from '../../../context/UserContext';
+import { Context } from '../../../context/UserContext'; //  Context
 
 // 
 function Login() {
-    function handleChange(e) { };
+    const [user, setUser] = useState({});
+    const { login } = useContext(Context);
+
+    function handleChange(e) { setUser({ ...user, [e.target.name]: e.target.value }); };
+
+    function handleSubmit(e) {
+        e.preventDefault();
+        login(user);
+    };
 
     return (
-
         <section className={styles.form_container}>
             <h1>Login</h1>
 
-            <form>
+            <form onSubmit={handleSubmit}>
                 <Input
                     text='E-mail'
                     type='email'
