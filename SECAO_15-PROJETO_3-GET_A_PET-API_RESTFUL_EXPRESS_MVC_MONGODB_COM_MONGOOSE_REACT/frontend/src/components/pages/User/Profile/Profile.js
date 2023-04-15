@@ -5,11 +5,13 @@ import formStyles from '../../../form/Form.module.css';
 import api from '../../../../utils/api';
 import { useState, useEffect } from 'react';
 import Input from '../../../form/Input/Input';
+import useflashMessage from '../../../../hooks/useFlashMessage';
 
 // 
 function Profile() {
     const [user, setUser] = useState({});
     const [token] = useState(localStorage.getItem('token') || '');
+    const { setFlashMessage } = useflashMessage();
 
     useEffect(() => {
         api.get('/users/checkUser',
@@ -17,8 +19,34 @@ function Profile() {
         ).then((response) => { setUser(response.data) });
     }, [token])
 
-    function onFileChange(e) { };
-    function handleChange(e) { };
+    function onFileChange(e) { setUser({ ...user, [e.target.name]: e.target.files[0] }); };
+
+    function handleChange(e) { setUser({ ...user, [e.target.name]: e.target.value }); };
+
+    async function handleSubmit(e) {
+        e.preventDefault();
+
+        let msgType = 'success';
+        const formData = new FormData();
+
+        await Object.keys(user).forEach((key) => formData.append(key, user[key]));
+
+        const data = await api.patch(`/users/edit/${user._id}`, formData,
+            {
+                headers:
+                {
+                    Authorization: `Bearer ${JSON.parse(token)}`,
+                    'Content-Type': 'multipart/form-data'
+                }
+            }
+        ).then((response) => { return response.data; })
+            .catch((error) => {
+                msgType = 'error';
+                return error.response.data;
+            });
+        
+        setFlashMessage(data.message, msgType);
+    };
 
     return (
         <section>
@@ -27,7 +55,7 @@ function Profile() {
                 <p>Preview Imagem</p>
             </div>
 
-            <form className={formStyles.form_container}>
+            <form onSubmit={handleSubmit} className={formStyles.form_container}>
                 <Input
                     text='Imagem'
                     type='file'
