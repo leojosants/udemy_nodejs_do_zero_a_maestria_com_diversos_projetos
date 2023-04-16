@@ -6,7 +6,7 @@ import Login from './components/pages/Auth/Login';
 import Register from './components/pages/Auth/Register';
 import Home from './components/pages/Home';
 import Profile from './components/pages/User/Profile/Profile';
-import MyPet from './components/pages/Pet/MyPet/MyPet';
+import MyPets from './components/pages/Pet/MyPets/MyPets';
 import AddPet from './components/pages/Pet/AddPet/AddPet';
 
 /*  Components/Layouts  */
@@ -32,7 +32,7 @@ function App() {
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
             <Route path='/user/profile' element={<Profile />} />
-            <Route path='/pet/MyPets' element={<MyPet />} />
+            <Route path='/pet/myPets' element={<MyPets />} />
             <Route path='/pet/add' element={<AddPet />} />
             <Route path='/' element={<Home />} />
           </Routes>

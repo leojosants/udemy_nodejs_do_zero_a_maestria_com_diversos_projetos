@@ -15,13 +15,17 @@ function PetForm({ handleSubmit, petData, btnText }) {
         setPet({ ...pet, images: [...e.target.files] });
     };
 
-    function handleChange(e) { setPet({ ...pet, [e.target.name]: e.target.value }); };
+    function handleChange(e) {
+        setPet({ ...pet, [e.target.name]: e.target.value });
+    };
 
-    function handleColor(e) { setPet({ ...pet, color: e.target.options[e.target.selectedIndex].text }); };
+    function handleColor(e) {
+        setPet({ ...pet, color: e.target.options[e.target.selectedIndex].text });
+    };
 
     function submit(e) {
         e.preventDefault();
-        console.log(pet);
+        // console.log(pet);
         handleSubmit(pet);
     };
 
@@ -34,16 +38,14 @@ function PetForm({ handleSubmit, petData, btnText }) {
                             <img
                                 src={URL.createObjectURL(image)}
                                 alt={pet.name}
-                                key={`${pet.name} * ${index}`}
+                                key={`${pet.name} + ${index}`}
                             />
                         ))
-                        :
-                        pet.images &&
-                        pet.images.map((image, index) => (
+                        : pet.images && pet.images.map((image, index) => (
                             <img
-                                src={`${process.env.REACT_APP_API}/imagens/pets${image}`}
+                                src={`${process.env.REACT_APP_API}/imagens/pets/${image}`}
                                 alt={pet.name}
-                                key={`${pet.name} * ${index}`}
+                                key={`${pet.name} + ${index}`}
                             />
                         ))
                 }

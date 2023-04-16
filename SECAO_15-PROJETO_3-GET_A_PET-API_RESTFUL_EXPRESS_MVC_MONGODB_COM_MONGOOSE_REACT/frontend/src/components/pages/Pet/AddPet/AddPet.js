@@ -37,9 +37,9 @@ function AddPet() {
             }
         )
             .then((response) => { return response.data; })
-            .catch((error) => {
+            .catch((err) => {
                 msgType = 'error';
-                return error.response.data;
+                return err.response.data;
             });
 
         setFlashMessage(data.message, msgType);

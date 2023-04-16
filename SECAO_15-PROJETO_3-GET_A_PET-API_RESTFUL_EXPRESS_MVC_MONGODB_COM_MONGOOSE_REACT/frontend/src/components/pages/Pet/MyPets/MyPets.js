@@ -28,7 +28,19 @@ function MyPet() {
             </div>
 
             <div>
-                {pets.length > 0 && <p>Meus Pets cadastrados</p>}
+                {
+                    pets.length > 0 &&
+                    pets.map((pet) => (
+                        <div key={pet._id}>
+                            <RoundedImage
+                                src={`${process.env.REACT_APP_API}/imagens/pets${pet.images[0]}`}
+                                alt={pet.name}
+                                width='75px'
+                            />
+                            <span className="bold">{pet.name}</span>
+                        </div>
+                    ))
+                }
                 {pets.length === 0 && <p>Não há Pets cadastrados</p>}
             </div>
         </section>
