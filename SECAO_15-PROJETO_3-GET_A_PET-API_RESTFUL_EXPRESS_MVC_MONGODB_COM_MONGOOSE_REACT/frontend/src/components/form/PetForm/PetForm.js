@@ -21,8 +21,8 @@ function PetForm({ handleSubmit, petData, btnText }) {
 
     function submit(e) {
         e.preventDefault();
-        // handleSubmit(pet);
         console.log(pet);
+        handleSubmit(pet);
     };
 
     return (
