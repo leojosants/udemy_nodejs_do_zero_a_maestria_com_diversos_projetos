@@ -6,6 +6,7 @@ import api from '../../../../utils/api';
 import { useState, useEffect } from 'react';
 import Input from '../../../form/Input/Input';
 import useflashMessage from '../../../../hooks/useFlashMessage';
+import RoundedImage from '../../../layout/RoundedImage/RoundedImage';
 
 // 
 function Profile() {
@@ -60,7 +61,7 @@ function Profile() {
 
                 {
                     (user.image || preview) && (
-                        <img
+                        <RoundedImage
                             src={preview ? URL.createObjectURL(preview) : `${process.env.REACT_APP_API}/images/users/${user.image}`}
                             alt={user.name}
                         />
