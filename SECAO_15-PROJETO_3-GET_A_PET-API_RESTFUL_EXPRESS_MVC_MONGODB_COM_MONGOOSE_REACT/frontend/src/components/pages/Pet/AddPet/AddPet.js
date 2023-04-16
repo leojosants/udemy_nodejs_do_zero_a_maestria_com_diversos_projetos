@@ -2,10 +2,13 @@
 import api from '../../../../utils/api';
 import styles from './AddPet.module.css';
 import { useState } from 'react'
-import { useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 /*  Hooks   */
 import useFlashMessage from '../../../../hooks/useFlashMessage';
+
+//  Componentes //
+import PetForm from '../../../form/PetForm/PetForm';
 
 
 // 
@@ -14,11 +17,10 @@ function AddPet() {
         <section className={styles.addPet_header}>
             <div>
                 <h1>Cadastre um Pet</h1>
-             
                 <p>Depois ele ficará disponível para adoção</p>
             </div>
 
-            <p>Formulário</p>
+            <PetForm btnText='Cadastrar Pet' />
         </section>
     );
 };
