@@ -1,12 +1,13 @@
 // 
-const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const User = require('../models/User');
 
 // Helpers //
-const createUserToken = require('../helpers/create-user-token');
-const getToken = require('../helpers/get-token');
 const getUserByToken = require('../helpers/get-user-by-token');
+const getToken = require('../helpers/get-token');
+const createUserToken = require('../helpers/create-user-token');
+const { imageUpload } = require('../helpers/image-upload');  //  A
 
 module.exports = class UserController {
     static async register(req, res) {
@@ -78,7 +79,7 @@ module.exports = class UserController {
             return;
         }
 
-        //  Check if exists
+        //  Check if user exists
         const user = await User.findOne({ email: email });
 
         if (!user) {
@@ -86,7 +87,7 @@ module.exports = class UserController {
             return;
         }
 
-        //  Check if password match with db password
+        //  Check if password match with do password
         const checkPassword = await bcrypt.compare(password, user.password);
 
         if (!checkPassword) {
@@ -124,7 +125,7 @@ module.exports = class UserController {
     };
 
     static async editUser(req, res) {
-        const id = req.params.id;
+        // const id = req.params.id; // A
 
         //  Check if user exists
         const token = getToken(req);
@@ -139,6 +140,7 @@ module.exports = class UserController {
             res.status(422).json({ message: 'O nome é obrigatório!' });
             return;
         }
+        user.name = name;   // Add
 
         if (!email) {
             res.status(422).json({ message: 'O email é obrigatório!' });
@@ -152,14 +154,12 @@ module.exports = class UserController {
             res.status(422).json({ message: 'Por favor, utilize outro e-mail!' });
             return;
         }
-
         user.email = email;
 
         if (!phone) {
             res.status(422).json({ message: 'O telefone é obrigatório!' });
             return;
         }
-
         user.phone = phone;
 
         if (password !== confirmPassword) {
@@ -177,18 +177,22 @@ module.exports = class UserController {
         try {
 
             //  Returns user update data
-            await User.findByIdAndUpdate(
+            // await User.findByIdAndUpdate(
+            const updatedUser = await User.findByIdAndUpdate( //Add
                 { _id: user._id },
                 { $set: user },
                 { new: true }
             );
 
-            res.status(200).json({ messagem: 'Usuário atualizado com sucesso!' });
+            res.status(200).json(
+                {
+                    messagem: 'Usuário atualizado com sucesso!',
+                    data: updatedUser
+                }
+            );
 
-        } catch (error) { res.status(500).json({ messagem: error }); return; }
-
-
-
+        }
+        catch (error) { res.status(500).json({ messagem: error }); return; }
     };
 
 };

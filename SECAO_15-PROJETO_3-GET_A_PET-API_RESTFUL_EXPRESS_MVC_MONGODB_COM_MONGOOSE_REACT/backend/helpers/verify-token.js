@@ -1,12 +1,15 @@
 // 
 const jwt = require('jsonwebtoken');
-const getToken = require('./get-token');
+// const getToken = require('./get-token');
 
 //  Middleware to validate token
 const checkToken = (req, res, next) => {
-    if (!req.headers.authorization) { return res.status(401).json({ message: 'Acesso negado!' }); }
+    const authHeader = req.headers["authorization"]; //A
+    const token = authHeader && authHeader.split(" ")[1] //A;
+
+    // if (!req.headers.authorization) { return res.status(401).json({ message: 'Acesso negado!' }); } 
    
-    const token = getToken(req);
+    // const token = getToken(req);
     
     if (!token) { return res.status(401).json({ message: 'Acesso negado!' }); }
 
