@@ -18,6 +18,7 @@ function AddPet() {
 
     async function registerPet(pet) {
         let msgType = 'success';
+
         const formData = new FormData();
 
         await Object.keys(pet).forEach((key) => {
@@ -42,7 +43,7 @@ function AddPet() {
             });
 
         setFlashMessage(data.message, msgType);
-       
+
         if (msgType !== 'error') { navegate('/pets/myPets'); }
     };
 
