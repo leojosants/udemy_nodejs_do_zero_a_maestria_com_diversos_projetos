@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import RoundedImage from '../../../layout/RoundedImage/RoundedImage';
 import useFlashMessage from '../../../../hooks/useFlashMessage';
 import api from '../../../../utils/api';
+import styles from '../../Pet/Dashboard.module.css';
 
 // 
 function MyPets() {
@@ -32,11 +33,26 @@ function MyPets() {
                     pets.map((pet) => (
                         <div key={pet._id}>
                             <RoundedImage
-                                src={`${process.env.REACT_APP_API}/imagens/pets${pet.images[0]}`}
+                                src={`${process.env.REACT_APP_API}/imagens/pets/${pet.images[0]}`}
                                 alt={pet.name}
                                 width='75px'
                             />
-                            <span className="bold">{pet.name}</span>
+                            <span className="bold"> {pet.name}</span>
+                            <div className={styles.action}>
+                                {
+                                    pet.available ? (
+                                        <>
+                                            {
+                                                pet.adopter && (<button>Concluir adoção</button>)
+                                            }
+                                            <Link to={`/pet/edit/${pet._id}` }>Editar</Link>
+                                            <button>Excluir</button>
+                                        </>
+                                    ) : (
+                                        <p>Pet já adotado!</p>
+                                    )
+                                }
+                            </div>
                         </div>
                     ))
                 }
@@ -44,7 +60,7 @@ function MyPets() {
                     pets.length === 0 && <p>Não há Pets cadastrados</p>
                 }
             </div>
-        </section>
+        </section >
     );
 };
 
