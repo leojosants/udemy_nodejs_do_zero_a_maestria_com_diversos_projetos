@@ -2,23 +2,22 @@
 const Pet = require('../models/Pet');
 
 //  Helpers
-const getUserByToken = require('../helpers/get-user-by-token');
 const getToken = require('../helpers/get-token');
+const getUserByToken = require('../helpers/get-user-by-token');
 
-// Object
 const ObjectId = require('mongoose').Types.ObjectId;
 
 module.exports = class PetController {
 
     //  Create a Pet
     static async create(req, res) {
-        const { name, age, description, weight, color } = req.body;
+        const { name, age, weight, color } = req.body;
         const images = req.files;
         const available = true;
 
         //  Images upload
 
-        //  Validation
+        //  Validations
         if (!name) {
             res.status(422).json({ message: 'O nome é obrigatório!' });
             return;
@@ -51,11 +50,11 @@ module.exports = class PetController {
         //  Create a pet
         const pet = new Pet(
             {
-                name, age, description, weight, color, available,
+                name, age, weight, color, available,
                 images: [],
 
                 user: {
-                    _id: user.id,
+                    _id: user._id,
                     name: user.name,
                     image: user.image,
                     phone: user.phone
@@ -69,7 +68,9 @@ module.exports = class PetController {
             const newPet = await pet.save();
             res.status(201).json({ message: 'Pet cadastrado com sucesso!', newPet });
         }
-        catch (error) { res.status(500).json({ message: error }); }
+        catch (error) {
+            res.status(500).json({ message: error });
+        }
 
     };
 
@@ -86,8 +87,7 @@ module.exports = class PetController {
         const token = getToken(req);
         const user = await getUserByToken(token);
 
-        // const pets = await Pet.find({ 'user._id': user.id }).sort('-createdAt');
-        const pets = await Pet.find({ 'user._id': user._id }).sort('-createdAt');   // Add
+        const pets = await Pet.find({ 'user._id': user._id }).sort('-createdAt');
 
         res.status(200).json({ pets });
     };
@@ -99,8 +99,7 @@ module.exports = class PetController {
         const token = getToken(req);
         const user = await getUserByToken(token);
 
-        // const pets = await Pet.find({ 'adopter._id': user.id }).sort('-createdAt');
-        const pets = await Pet.find({ 'adopter._id': user._id }).sort('-createdAt'); //  Add
+        const pets = await Pet.find({ 'adopter._id': user._id }).sort('-createdAt');
 
         res.status(200).json({ pets });
     };
@@ -117,7 +116,6 @@ module.exports = class PetController {
 
         //  Check if pet exists
         const pet = await Pet.findOne({ _id: id });
-
         if (!pet) {
             res.status(404).json({ message: 'Pet não encontrado!' });
             return;
@@ -161,13 +159,12 @@ module.exports = class PetController {
     // update a pet
     static async updatePet(req, res) {
         const id = req.params.id;
-        const { name, age, description, weight, color, available } = req.body;
+        const { name, age, weight, color, available } = req.body;
         const images = req.files;
         const updatedData = {};
 
         //  Check if pet exists
         const pet = await Pet.findOne({ _id: id });
-
         if (!pet) {
             res.status(404).json({ message: 'Pet não encontrado!' });
             return;
@@ -219,35 +216,33 @@ module.exports = class PetController {
         await Pet.findByIdAndUpdate(id, updatedData);
         res.status(200).json({ message: 'Pet atualizado com sucesso!' });
 
-        if (!available) {
-            res.status(422).json({ message: 'O status é obrigatório!' })
-            return;
-        }
-        else { updatedData.available = available }
+        // if (!available) {
+        //     res.status(422).json({ message: 'O status é obrigatório!' })
+        //     return;
+        // }
+        // else { updatedData.available = available }
 
-        updatedData.description = description
+        // updatedData.description = description
 
-        await Pet.findByIdAndUpdate(id, updatedData)
+        // await Pet.findByIdAndUpdate(id, updatedData)
 
-        res.status(200).json({ pet: pet, message: 'Pet atualizado com sucesso!' })
+        // res.status(200).json({ pet: pet, message: 'Pet atualizado com sucesso!' })
     };
 
     // schedule a visit
     static async schedule(req, res) {
         const id = req.params.id;
-
-        //  Check if pet exists
-        const pet = await Pet.findOne({ _id: id });
-
-        //  Check if user registered the pat
         const token = getToken(req);
         const user = await getUserByToken(token);
 
+        //  Check if pet exists
+        const pet = await Pet.findOne({ _id: id });
         if (!pet) {
             res.status(404).json({ message: 'Pet não encontrado!' });
             return;
         }
 
+        //  Check if user registered the pet
         if (pet.user._id.equals(user._id)) {
             res.status(422).json({
                 message: 'Você não pode agendar uma visita com o seu próprio Pet!'
@@ -272,11 +267,10 @@ module.exports = class PetController {
             image: user.image
         };
 
-        // await Per.findByIdAndUpdate(id, pet);
-        await Pet.findByIdAndUpdate(pet._id, pet);   //  Add
+        await Pet.findByIdAndUpdate(id, pet);
 
         res.status(200).json(
-            { message: `A visita foi agendada com sucesso, entre em contato com ${prt.user.name} pelo telefone ${pet.user.phone}` }
+            { message: `A visita foi agendada com sucesso, entre em contato com ${pet.user.name} pelo telefone ${pet.user.phone}` }
         );
     };
 
@@ -286,7 +280,6 @@ module.exports = class PetController {
 
         //  Check if pet exists
         const pet = await Pet.findOne({ _id: id });
-
         if (!pet) {
             res.status(404).json({ message: 'Pet não encontrado!' });
             return;
@@ -298,17 +291,16 @@ module.exports = class PetController {
 
         if (pet.user._id.toString() !== user._id.toString()) {
             res.status(422).json({
-                message: 'Parabéns! O ciclo de adoção foi finalizada com sucesso!'
+                message: 'Houve um problema ao processar a sua solicitação, tente novamente mais tarde!'
             });
             return;
         }
 
         pet.available = false;
-        // await Per.findByIdAndUpdate(id, pet);
-        await Pet.findByIdAndUpdate(pet._id, pet);
+        await Pet.findByIdAndUpdate(id, pet);
 
         res.status(200).json(
-            { message: `A visita foi agendada com sucesso, entre em contato com ${pet.user.name} pelo telefone ${pet.user.phone}` }
+            { message: 'Parabéns! O ciclo de adoção foi finalizado com sucesso!' }
         );
     };
 

@@ -11,7 +11,9 @@ function Login() {
     const [user, setUser] = useState({});
     const { login } = useContext(Context);
 
-    function handleChange(e) { setUser({ ...user, [e.target.name]: e.target.value }); };
+    function handleChange(e) {
+        setUser({ ...user, [e.target.name]: e.target.value });
+    };
 
     function handleSubmit(e) {
         e.preventDefault();

@@ -13,13 +13,13 @@ function Register() {
     const [user, setUser] = useState({});
     const { register } = useContext(Context);
 
-    function handleChange(e) { setUser({ ...user, [e.target.name]: e.target.value }); };
+    function handleChange(e) {
+        setUser({ ...user, [e.target.name]: e.target.value });
+    };
 
     function handleSubmit(e) { 
         e.preventDefault();
-
-        //  Enviar usuário para o banco
-        register(user);
+        register(user); //  Enviar usuário para o banco
     };
 
     return (
@@ -62,7 +62,7 @@ function Register() {
                 <Input
                     text='Confirmação de senha'
                     type='password'
-                    name='confirmPassword'
+                    name='confirmpassword'
                     placeholder='Confirme a sua senha'
                     handleOnChange={handleChange}
                 />

@@ -27,7 +27,9 @@ function AddPet() {
                     formData.append('images', pet[key][i]);
                 }
             }
-            else { formData.append(key, pet[key]); }
+            else {
+                formData.append(key, pet[key]);
+            }
         });
 
         const data = await api.post('pets/create', formData,
@@ -35,12 +37,11 @@ function AddPet() {
                 Authorization: `Bearer ${JSON.parse(token)}`,
                 'Content-Type': 'multipart/form-data'
             }
-        )
-            .then((response) => { return response.data; })
-            .catch((err) => {
-                msgType = 'error';
-                return err.response.data;
-            });
+        ).then((response) => { return response.data; }
+        ).catch((error) => {
+            msgType = 'error';
+            return error.response.data;
+        });
 
         setFlashMessage(data.message, msgType);
 

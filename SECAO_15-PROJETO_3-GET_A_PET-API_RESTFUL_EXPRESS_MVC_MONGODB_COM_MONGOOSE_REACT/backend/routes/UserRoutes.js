@@ -11,7 +11,7 @@ const { imageUpload } = require('../helpers/image-upload');
 //  Routes  //
 router.post('/register', UserController.register);
 router.post('/login', UserController.login);
-router.get('/checkUser', UserController.checkUser);
+router.get('/checkuser', UserController.checkUser);
 router.get('/:id', UserController.getUserById);
 router.patch('/edit/:id', verifyToken, imageUpload.single('image'), UserController.editUser);
 

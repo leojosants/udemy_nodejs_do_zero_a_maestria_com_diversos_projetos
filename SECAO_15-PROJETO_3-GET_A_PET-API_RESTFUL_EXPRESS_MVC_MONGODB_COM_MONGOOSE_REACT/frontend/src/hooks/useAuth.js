@@ -13,7 +13,9 @@ export default function useAuth() {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        if (token) { api.defaults.headers.Authorization = `Bearer ${JSON.parse(token)}`; }
+        if (token) {
+            api.defaults.headers.Authorization = `Bearer ${JSON.parse(token)}`;
+        }
         setAuthenticated(true);
     }, []);
 
@@ -22,7 +24,9 @@ export default function useAuth() {
         let msgType = 'success';
 
         try {
-            const data = await api.post('/users/register', user).then((response) => { return response.data; });
+            const data = await api.post('/users/register', user).then((response) => {
+                return response.data;
+            });
             await authUser(data);
         }
         catch (error) {
@@ -31,6 +35,16 @@ export default function useAuth() {
         }
 
         setFlashMessage(msgText, msgType);
+    };   
+  
+    function logout() {
+        const msgText = 'Logout realizado com sucesso!';
+        const msgType = 'success';
+        setAuthenticated(false);
+        localStorage.removeItem('token');
+        api.defaults.headers.Authorization = undefined;
+        navegate('/');
+        setFlashMessage(msgText, msgType);
     };
 
     async function login(user) {
@@ -38,7 +52,7 @@ export default function useAuth() {
         let msgType = 'success';
 
         try {
-            const data = await api.post('users/login', user).then((response) => { return response.data });
+            const data = await api.post('/users/login', user).then((response) => { return response.data });
             await authUser(data);
         } catch (error) {
             msgText = error.response.data.message;
@@ -52,16 +66,6 @@ export default function useAuth() {
         setAuthenticated(true);
         localStorage.setItem('token', JSON.stringify(data.token));
         navegate('/');  // history.push('/');
-    };
-
-    function logout() {
-        const msgText = 'Logout realizado com sucesso!';
-        const msgType = 'success';
-        setAuthenticated(false);
-        localStorage.removeItem('token');
-        api.defaults.headers.Authorization = undefined;
-        navegate('/');
-        setFlashMessage(msgText, msgType);
     };
 
     return { authenticated, register, logout, login };

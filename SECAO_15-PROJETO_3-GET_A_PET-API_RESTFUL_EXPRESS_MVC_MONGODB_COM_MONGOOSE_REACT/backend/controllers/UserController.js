@@ -1,17 +1,17 @@
 // 
+const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
 
 // Helpers //
-const getUserByToken = require('../helpers/get-user-by-token');
-const getToken = require('../helpers/get-token');
 const createUserToken = require('../helpers/create-user-token');
+const getToken = require('../helpers/get-token');
+const getUserByToken = require('../helpers/get-user-by-token');
 const { imageUpload } = require('../helpers/image-upload');  //  A
 
 module.exports = class UserController {
     static async register(req, res) {
-        const { name, email, phone, password, confirmPassword } = req.body;
+        const { name, email, phone, password, confirmpassword } = req.body;
 
         //  Validations  //
         if (!name) {
@@ -34,19 +34,18 @@ module.exports = class UserController {
             return;
         }
 
-        if (!confirmPassword) {
+        if (!confirmpassword) {
             res.status(422).json({ message: 'A confirmação de senha é obrigatória!' });
             return;
         }
 
-        if (password !== confirmPassword) {
+        if (password !== confirmpassword) {
             res.status(422).json({ message: 'A senha e a confirmação de senha precisam ser iguais!' });
             return;
         }
 
         //  Check if exists
         const userExists = await User.findOne({ email: email });
-
         if (userExists) {
             res.status(422).json({ message: 'Por favor, utilize outro e-mail!' });
             return;
@@ -81,7 +80,6 @@ module.exports = class UserController {
 
         //  Check if user exists
         const user = await User.findOne({ email: email });
-
         if (!user) {
             res.status(422).json({ message: 'Não há usuário cadastrado com este e-mail!' });
             return;
@@ -89,7 +87,6 @@ module.exports = class UserController {
 
         //  Check if password match with do password
         const checkPassword = await bcrypt.compare(password, user.password);
-
         if (!checkPassword) {
             res.status(422).json({ message: 'Senha inválida!' });
             return;
@@ -125,22 +122,24 @@ module.exports = class UserController {
     };
 
     static async editUser(req, res) {
-        // const id = req.params.id; // A
+        const id = req.params.id;
 
         //  Check if user exists
-        const token = getToken(req);
+        const token = getToken(req)
         const user = await getUserByToken(token);
 
-        const { name, email, phone, password, confirmPassword } = req.body;
+        const { name, email, phone, password, confirmpassword } = req.body;
 
-        if (req.file) { user.image = req.file.filename; }
+        if (req.file) {
+            user.image = req.file.filename;
+        }
 
         //  Validations
         if (!name) {
             res.status(422).json({ message: 'O nome é obrigatório!' });
             return;
         }
-        user.name = name;   // Add
+        user.name = name;
 
         if (!email) {
             res.status(422).json({ message: 'O email é obrigatório!' });
@@ -149,7 +148,6 @@ module.exports = class UserController {
 
         //  Check if email has already taken
         const userExists = await User.findOne({ email: email });
-
         if (user.email !== email && userExists) {
             res.status(422).json({ message: 'Por favor, utilize outro e-mail!' });
             return;
@@ -162,10 +160,11 @@ module.exports = class UserController {
         }
         user.phone = phone;
 
-        if (password !== confirmPassword) {
-            res.status(422).json({ message: 'A senha e a confirmação de senha precisam ser iguais!' }); return;
+        if (password !== confirmpassword) {
+            res.status(422).json({ message: 'A senha e a confirmação de senha precisam ser iguais!' });
+            return;
         }
-        else if (password === confirmPassword && password != null) {
+        else if (password === confirmpassword && password != null) {
 
             //  Create password
             const salt = await bcrypt.genSalt(12);
@@ -177,8 +176,7 @@ module.exports = class UserController {
         try {
 
             //  Returns user update data
-            // await User.findByIdAndUpdate(
-            const updatedUser = await User.findByIdAndUpdate( //Add
+            const updatedUser = await User.findByIdAndUpdate(
                 { _id: user._id },
                 { $set: user },
                 { new: true }
@@ -186,13 +184,16 @@ module.exports = class UserController {
 
             res.status(200).json(
                 {
-                    messagem: 'Usuário atualizado com sucesso!',
+                    message: 'Usuário atualizado com sucesso!',
                     data: updatedUser
                 }
             );
 
         }
-        catch (error) { res.status(500).json({ messagem: error }); return; }
+        catch (error) {
+            res.status(500).json({ message: error });
+            return;
+        }
     };
 
 };

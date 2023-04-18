@@ -6,7 +6,7 @@ import useFlashMessage from '../../../../hooks/useFlashMessage';
 import api from '../../../../utils/api';
 
 // 
-function MyPet() {
+function MyPets() {
     const [pets, setPets] = useState([]);
     const [token] = useState(localStorage.getItem('token') || '');
     const { setFlashMessage } = useFlashMessage();
@@ -16,8 +16,7 @@ function MyPet() {
             {
                 headers: { Authorization: `Bearer ${JSON.parse(token)}` }
             }
-        )
-            .then((response) => { setPets(response.data.pets); })
+        ).then((response) => { setPets(response.data.pets); })
     }, [token]);
 
     return (
@@ -41,10 +40,12 @@ function MyPet() {
                         </div>
                     ))
                 }
-                {pets.length === 0 && <p>Não há Pets cadastrados</p>}
+                {
+                    pets.length === 0 && <p>Não há Pets cadastrados</p>
+                }
             </div>
         </section>
     );
 };
 
-export default MyPet;
+export default MyPets;
