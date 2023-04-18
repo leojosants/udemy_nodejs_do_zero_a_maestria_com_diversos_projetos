@@ -13,12 +13,15 @@ function MyPets() {
     const { setFlashMessage } = useFlashMessage();
 
     useEffect(() => {
-        api.get('/pets/myPets',
+        api.get('/pets/mypets',
             {
                 headers: { Authorization: `Bearer ${JSON.parse(token)}` }
             }
-        ).then((response) => { setPets(response.data.pets); })
+        ).then((response) => {
+            setPets(response.data.pets);
+        })
     }, [token]);
+
 
     return (
         <section>
@@ -45,7 +48,7 @@ function MyPets() {
                                             {
                                                 pet.adopter && (<button>Concluir adoção</button>)
                                             }
-                                            <Link to={`/pet/edit/${pet._id}` }>Editar</Link>
+                                            <Link to={`/pet/edit/${pet._id}`}>Editar</Link>
                                             <button>Excluir</button>
                                         </>
                                     ) : (

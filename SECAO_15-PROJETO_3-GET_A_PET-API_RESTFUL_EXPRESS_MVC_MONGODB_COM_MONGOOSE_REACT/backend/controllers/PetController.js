@@ -89,7 +89,7 @@ module.exports = class PetController {
 
         const pets = await Pet.find({ 'user._id': user._id }).sort('-createdAt');
 
-        res.status(200).json({ pets });
+        res.status(200).json({ pets: pets });
     };
 
     // get all user adoptions
@@ -101,7 +101,7 @@ module.exports = class PetController {
 
         const pets = await Pet.find({ 'adopter._id': user._id }).sort('-createdAt');
 
-        res.status(200).json({ pets });
+        res.status(200).json({ pets: pets });
     };
 
     // get a specific pet
